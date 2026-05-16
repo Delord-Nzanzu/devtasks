@@ -168,6 +168,20 @@ const ListTasks = () => {
                     <span className="text-[11px] font-black uppercase px-2 py-1 rounded-full bg-neutral-100 text-neutral-700 shrink-0">
                       {task.category ?? "TASK"}
                     </span>
+
+                    {task.priority && (
+                      <span
+                        className={`text-[11px] font-black uppercase px-2 py-1 rounded-full shrink-0 ${
+                          task.priority === "HIGH"
+                            ? "bg-red-500/10 text-red-500"
+                            : task.priority === "MEDIUM"
+                            ? "bg-yellow-500/10 text-yellow-600"
+                            : "bg-blue-500/10 text-blue-500"
+                        }`}
+                      >
+                        {task.priority}
+                      </span>
+                    )}
                   </div>
                 </div>
 

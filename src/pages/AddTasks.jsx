@@ -5,6 +5,7 @@ import { toast } from "sonner";
 const AddTasks = () => {
   const [task, setTask] = useState("");
   const [category, setCategory] = useState("FEATURE");
+  const [priority, setPriority] = useState("MEDIUM");
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem("tasks");
     return savedTasks ? JSON.parse(savedTasks) : [];
@@ -23,6 +24,7 @@ const AddTasks = () => {
       id: Date.now(),
       text: task,
       category,
+      priority,
       completed: false,
     };
 
@@ -33,6 +35,7 @@ const AddTasks = () => {
     });
 
     setTask("");
+    setPriority("MEDIUM");
   };
 
   return (
@@ -105,6 +108,31 @@ const AddTasks = () => {
                   }`}
                 >
                   {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-left">
+            <label className="block text-[11px] font-black text-neutral-400 uppercase tracking-[0.25em] mb-3 ml-6">
+              Priority
+            </label>
+
+            <div className="flex items-center gap-3 ml-6">
+              {[
+                { value: "HIGH", color: "bg-red-500 text-white border-red-500", inactive: "bg-red-500/10 text-red-500 border-red-200 hover:bg-red-500/20" },
+                { value: "MEDIUM", color: "bg-yellow-500 text-white border-yellow-500", inactive: "bg-yellow-500/10 text-yellow-600 border-yellow-200 hover:bg-yellow-500/20" },
+                { value: "LOW", color: "bg-blue-500 text-white border-blue-500", inactive: "bg-blue-500/10 text-blue-500 border-blue-200 hover:bg-blue-500/20" },
+              ].map(({ value, color, inactive }) => (
+                <button
+                  type="button"
+                  key={value}
+                  onClick={() => setPriority(value)}
+                  className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-200 cursor-pointer border ${
+                    priority === value ? color : inactive
+                  }`}
+                >
+                  {value}
                 </button>
               ))}
             </div>
