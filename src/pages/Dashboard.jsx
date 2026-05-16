@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
+import ThemeToggle from '../components/ThemeToggle';
 
 const Dashboard = () => {
-  const [dark, setDark] = useState(false);
+  const { dark } = useTheme();
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
     let calcPercentage = 0;
-    
+
     if (savedTasks) {
       const tasks = JSON.parse(savedTasks);
       const totalTasks = tasks.length;
@@ -25,21 +27,19 @@ const Dashboard = () => {
     return () => clearTimeout(timer);
   }, []);
 
- const theme = {
-  light: {
-    wrapper: "bg-white text-black",
-    card: "bg-gray-50 border-gray-100 text-black hover:bg-black hover:text-white",
-    icon: "bg-white text-black group-hover:bg-white/10 group-hover:text-white",
-    thumb: "bg-black",
-  },
-  dark: {
-    wrapper: "bg-black text-white",
-    card: "bg-zinc-900 border-zinc-800 text-white hover:bg-white hover:text-black",
-    icon: "bg-black text-white group-hover:bg-black/10 group-hover:text-black",
-    thumb: "bg-gray-400",
-  }
-};
-const t = dark ? theme.dark : theme.light;
+  const theme = {
+    light: {
+      wrapper: "bg-white text-black",
+      card: "bg-gray-50 border-gray-100 text-black hover:bg-black hover:text-white",
+      icon: "bg-white text-black group-hover:bg-white/10 group-hover:text-white",
+    },
+    dark: {
+      wrapper: "bg-black text-white",
+      card: "bg-zinc-900 border-zinc-800 text-white hover:bg-white hover:text-black",
+      icon: "bg-black text-white group-hover:bg-black/10 group-hover:text-black",
+    }
+  };
+  const t = dark ? theme.dark : theme.light;
 
   const cards = [
     {
@@ -75,47 +75,44 @@ const t = dark ? theme.dark : theme.light;
   ];
 
   return (
-  <div className={`${t.wrapper} h-screen w-full font-sans overflow-hidden flex flex-col p-8 transition-colors duration-300 `}>
+    <div className={`${t.wrapper} h-screen w-full font-sans overflow-hidden flex flex-col p-8 transition-colors duration-300`}>
       <div className="max-w-6xl w-full mx-auto flex flex-col h-full">
         <header className="shrink-0 mb-12 flex justify-between items-end">
           <div>
             <h1 className="text-4xl font-black uppercase tracking-tighter mb-2">Dashboard</h1>
             <p className="text-gray-400 font-medium mb-6">Manage your engineering workflow</p>
-            
+
             <div className="w-full max-w-sm">
               <div className="text-xs font-black uppercase tracking-widest mb-2">
                 {percentage}% COMPLETE
               </div>
               <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-                <div 
+                <div
                   className={`h-full transition-all duration-1000 ${dark ? 'bg-white' : 'bg-black'}`}
                   style={{ width: `${percentage}%` }}
-                ></div>
+                />
               </div>
             </div>
           </div>
 
-         <div className="flex items-center gap-4">
-       <label htmlFor="darkSwitch" className="relative inline-block w-11 h-6 cursor-pointer">
-        <input type="checkbox" id="darkSwitch" className="peer sr-only" checked={dark} onChange={() => setDark(!dark)} />
-
-        <span className={`absolute inset-0 rounded-full transition-colors duration-200 ${t.thumb}`} />
-        <span className="absolute top-1/2 left-0.5 -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-full"></span>
-        </label>
-        <Link to="/" className="text-xs font-bold uppercase tracking-widest hover:underline pb-1"> Exit to Site </Link>
-         </div>
-          
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <Link to="/" className="text-xs font-bold uppercase tracking-widest hover:underline pb-1">
+              Exit to Site
+            </Link>
+          </div>
         </header>
 
         <div className="grow flex items-center justify-center">
           <div className="grid md:grid-cols-3 gap-8 w-full">
             {cards.map((card) => (
-              <Link 
-                key={card.title} 
+              <Link
+                key={card.title}
                 to={card.path}
-               className={`group relative p-8 border rounded-3xl transition-all duration-500 transform hover:-translate-y-2 flex flex-col justify-between h-[320px] ${t.card}`} >
+                className={`group relative p-8 border rounded-3xl transition-all duration-500 transform hover:-translate-y-2 flex flex-col justify-between h-[320px] ${t.card}`}
+              >
                 <div>
-                  <div className={`mb-8 p-3 w-fit  rounded-xl  transition-colors shadow-sm ${t.icon}`}>
+                  <div className={`mb-8 p-3 w-fit rounded-xl transition-colors shadow-sm ${t.icon}`}>
                     {card.icon}
                   </div>
                   <h2 className="text-xl font-black mb-3 uppercase tracking-tight">{card.title}</h2>
@@ -131,7 +128,6 @@ const t = dark ? theme.dark : theme.light;
           </div>
         </div>
 
-        {/* Decorative element */}
         <div className="shrink-0 mt-8 pt-8 border-t border-gray-50 opacity-10">
           <h2 className="text-[12vw] font-black tracking-tighter leading-none select-none text-center">FLOW</h2>
         </div>

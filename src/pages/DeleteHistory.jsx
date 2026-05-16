@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from "sonner";
+import { useTheme } from '../context/ThemeContext';
+import ThemeToggle from '../components/ThemeToggle';
+
 const DeleteHistory = () => {
+  const { dark } = useTheme();
   const [deletedTasks, setDeletedTasks] = useState(() => {
     const stored = localStorage.getItem('deleted_tasks');
     if (stored) {
@@ -15,57 +19,31 @@ const DeleteHistory = () => {
     return [];
   });
 
-  // Wipe out handler
   const handleWipeOut = () => {
     localStorage.removeItem('deleted_tasks');
     toast.success("All data wiped successfully.");
     setDeletedTasks([]);
   };
 
-const restoreTask = (id) => {
-  // Get deleted tasks
-  const deleted =
-    JSON.parse(localStorage.getItem("deleted_tasks")) || [];
+  const restoreTask = (id) => {
+    const deleted = JSON.parse(localStorage.getItem("deleted_tasks")) || [];
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-  // Get active tasks
-  const tasks =
-    JSON.parse(localStorage.getItem("tasks")) || [];
+    const taskToRestore = deleted.find((task) => task.id === id);
+    if (!taskToRestore) return;
 
-  // Find the task to restore
-  const taskToRestore = deleted.find(
-    (task) => task.id === id
-  );
+    const updatedDeletedTasks = deleted.filter((task) => task.id !== id);
+    const updatedTasks = [...tasks, taskToRestore];
 
-  if (!taskToRestore) return;
+    localStorage.setItem("deleted_tasks", JSON.stringify(updatedDeletedTasks));
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
 
-  // Remove from deleted tasks
-  const updatedDeletedTasks = deleted.filter(
-    (task) => task.id !== id
-  );
-
-  // Add back to active tasks
-  const updatedTasks = [...tasks, taskToRestore];
-
-  // Update localStorage
-  localStorage.setItem(
-    "deleted_tasks",
-    JSON.stringify(updatedDeletedTasks)
-  );
-
-  localStorage.setItem(
-    "tasks",
-    JSON.stringify(updatedTasks)
-  );
-
-  // Update state
-  setDeletedTasks(updatedDeletedTasks);
-
-  // Toast feedback
-  toast.success("Task restored to roadmap.");
-};
+    setDeletedTasks(updatedDeletedTasks);
+    toast.success("Task restored to roadmap.");
+  };
 
   return (
-    <div className="h-screen w-full bg-white text-black font-sans overflow-hidden flex flex-col p-8">
+    <div className={`h-screen w-full font-sans overflow-hidden flex flex-col p-8 transition-colors duration-300 ${dark ? "bg-black text-white" : "bg-white text-black"}`}>
       <div className="max-w-6xl w-full mx-auto flex flex-col h-full">
 
         {/* Header */}
@@ -79,12 +57,15 @@ const restoreTask = (id) => {
             </p>
           </div>
 
-          <Link
-            to="/dashboard"
-            className="text-xs font-bold uppercase tracking-widest hover:underline pb-1 flex items-center"
-          >
-            <span className="mr-2">←</span> Back to Dashboard
-          </Link>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <Link
+              to="/dashboard"
+              className="text-xs font-bold uppercase tracking-widest hover:underline pb-1 flex items-center"
+            >
+              <span className="mr-2">←</span> Back to Dashboard
+            </Link>
+          </div>
         </header>
 
         {/* Main Content */}
@@ -93,42 +74,36 @@ const restoreTask = (id) => {
 
             {/* HISTORY LIST */}
             <div className="max-h-72 overflow-y-auto space-y-3 w-full pr-2">
-
               {deletedTasks.length === 0 ? (
-                <div className="text-center text-gray-400 font-medium py-10 border border-dashed border-gray-200 rounded-2xl">
+                <div className={`text-center font-medium py-10 border border-dashed rounded-2xl ${dark ? "text-gray-500 border-gray-700" : "text-gray-400 border-gray-200"}`}>
                   No deleted tasks found
                 </div>
               ) : (
                 deletedTasks.map((task) => (
                   <div
                     key={task.id}
-                    className="group border border-black/10 rounded-2xl px-5 py-4 flex items-center justify-between bg-white hover:bg-black hover:text-white transition-all duration-300 cursor-default"
+                    className={`group border rounded-2xl px-5 py-4 flex items-center justify-between transition-all duration-300 cursor-default ${
+                      dark
+                        ? "border-white/10 bg-zinc-900 hover:bg-white hover:text-black"
+                        : "border-black/10 bg-white hover:bg-black hover:text-white"
+                    }`}
                   >
-                    {/* Left Side */}
                     <div className="flex flex-col">
                       <span className="font-black uppercase tracking-wide text-sm">
                         {task.text}
                       </span>
-
                       <span className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300 mt-1 tracking-wider uppercase">
                         Deleted Task
                       </span>
                     </div>
 
-                    {/* Right Side */}
                     <div className="text-right flex flex-col items-end gap-3">
-
                       <div>
                         <div className="text-xs font-medium text-gray-500 group-hover:text-gray-200 transition-colors duration-300">
-                          {task.deletedAt
-                            ? new Date(task.deletedAt).toLocaleDateString()
-                            : ""}
+                          {task.deletedAt ? new Date(task.deletedAt).toLocaleDateString() : ""}
                         </div>
-
                         <div className="text-[10px] uppercase tracking-[0.2em] text-gray-300 group-hover:text-gray-400 transition-colors duration-300 mt-1">
-                          {task.deletedAt
-                            ? new Date(task.deletedAt).toLocaleTimeString()
-                            : ""}
+                          {task.deletedAt ? new Date(task.deletedAt).toLocaleTimeString() : ""}
                         </div>
                       </div>
 
@@ -138,12 +113,10 @@ const restoreTask = (id) => {
                       >
                         Restore
                       </button>
-
                     </div>
                   </div>
                 ))
               )}
-
             </div>
 
             <div className="text-center space-y-6">
@@ -166,12 +139,11 @@ const restoreTask = (id) => {
             <div className="grid gap-4">
               <button
                 onClick={handleWipeOut}
-                className="group relative w-full py-6 bg-white border-2 border-black rounded-2xl font-black uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300 flex items-center justify-center overflow-hidden"
+                className={`group relative w-full py-6 border-2 rounded-2xl font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center overflow-hidden ${dark ? "bg-black border-white text-white" : "bg-white border-black text-black"} hover:text-white`}
               >
                 <span className="relative z-10">Clear History</span>
-                <div className="absolute inset-0 bg-red-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                <div className="absolute inset-0 bg-red-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               </button>
- 
             </div>
           </div>
         </div>
