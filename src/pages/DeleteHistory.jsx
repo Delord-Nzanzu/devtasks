@@ -42,6 +42,53 @@ const DeleteHistory = () => {
     toast.success("Task restored to roadmap.");
   };
 
+  const handleExport=()=>{
+    const tasks=JSON.parse(localStorage.getItem("tasks") || "[]");
+    const deletedTasks=JSON.parse(localStorage.getItem("deleted_tasks") || "[]");
+    let exportData=[...tasks,...deletedTasks];
+    exportData=JSON.stringify(exportData,null,2);
+    const blob=new Blob([exportData],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="devtasks-backup.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  const handleImport=()=>{
+    const input=document.createElement("input");
+    input.type="file";
+    input.accept=".json";
+    input.onchange=async (e)=>{
+      const file=e.target.files[0];
+      if(!file) return;
+      
+      try{
+        const text=await file.text();
+        const data=JSON.parse(text);
+        if(Array.isArray(data)){
+          const tasks=data.filter(item=>item.text && item.id && !item.deletedAt);
+          const deleted=data.filter(item=>item.text && item.id && item.deletedAt);
+          const existingTasks=JSON.parse(localStorage.getItem("tasks")) || [];
+          const existingDeleted=JSON.parse(localStorage.getItem("deleted_tasks")) || [];
+
+          localStorage.setItem("tasks",JSON.stringify([...existingTasks,...tasks]));
+          localStorage.setItem("deleted_tasks",JSON.stringify([...existingDeleted,...deleted]));
+          setDeletedTasks([...existingDeleted,...deleted]);
+          toast.success("Data imported successfully");
+        }else{
+          toast.error("Invalid file structure");
+        }
+      }catch(e){
+        console.error(e);
+        toast.error("Invalid file format");
+      }
+    }
+    input.click();
+  }
+  
+
   return (
     <div className={`h-screen w-full font-sans overflow-hidden flex flex-col p-8 transition-colors duration-300 ${dark ? "bg-black text-white" : "bg-white text-black"}`}>
       <div className="max-w-6xl w-full mx-auto flex flex-col h-full">
@@ -144,6 +191,21 @@ const DeleteHistory = () => {
                 <span className="relative z-10">Clear History</span>
                 <div className="absolute inset-0 bg-red-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               </button>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <button 
+                  onClick={handleImport}
+                  className={`py-3.5 border rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${dark ? "border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 text-gray-300" : "border-gray-200 bg-gray-50 hover:bg-gray-100 text-gray-700"}`}
+                >
+                  Import Data
+                </button>
+                <button
+                  onClick={handleExport}
+                  className={`py-3.5 border rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${dark ? "border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 text-gray-300" : "border-gray-200 bg-gray-50 hover:bg-gray-100 text-gray-700"}`}
+                >
+                  Export Backup
+                </button>
+              </div>
             </div>
           </div>
         </div>
