@@ -91,6 +91,11 @@ const DeleteHistory = () => {
 
   return (
     <div className={`h-screen w-full font-sans overflow-hidden flex flex-col p-8 transition-colors duration-300 ${dark ? "bg-black text-white" : "bg-white text-black"}`}>
+      {/* React 19 Document Metadata Hoisting */}
+      <title>System Logs & Purge History — Dev Tasks</title>
+      <meta name="description" content="View deleted history items, restore removed items back to active roadmap lists, or clear cached task system logs." />
+      <meta name="keywords" content="devtasks, delete-history, clear system cache, restore tasks, bug purge" />
+
       <div className="max-w-6xl w-full mx-auto flex flex-col h-full">
 
         {/* Header */}
@@ -186,6 +191,7 @@ const DeleteHistory = () => {
             <div className="grid gap-4">
               <button
                 onClick={handleWipeOut}
+                id="clear-history-button"
                 className={`group relative w-full py-6 border-2 rounded-2xl font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center overflow-hidden ${dark ? "bg-black border-white text-white" : "bg-white border-black text-black"} hover:text-white`}
               >
                 <span className="relative z-10">Clear History</span>

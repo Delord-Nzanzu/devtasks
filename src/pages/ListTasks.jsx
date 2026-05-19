@@ -129,6 +129,11 @@ const ListTasks = () => {
 
   return (
     <div className={`min-h-screen p-6 font-sans antialiased transition-colors duration-300 ${dark ? "bg-zinc-950" : "bg-[#FDFDFD]"}`}>
+      {/* React 19 Document Metadata Hoisting */}
+      <title>Task List & Roadmaps — Dev Tasks (devtasks)</title>
+      <meta name="description" content="View, search, filter, edit, and update active developer tasks and roadmaps. Manage bug tracking lists, refactor plans, and features." />
+      <meta name="keywords" content="devtasks, dev tasks, list-tasks, add lists, engineering roadmaps, todo lists" />
+
       <div className={`max-w-2xl mx-auto rounded-4xl shadow-lg p-8 border transition-colors duration-300 ${dark ? "bg-zinc-900 border-zinc-700" : "bg-white border-neutral-100"}`}>
         <div className="flex justify-between items-center mb-8">
           <h1 className={`text-3xl font-black uppercase ${dark ? "text-white" : "text-black"}`}>
@@ -140,6 +145,7 @@ const ListTasks = () => {
         {/* Search bar */}
         <input
           type="text"
+          id="search-tasks-input"
           placeholder="Search tasks..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

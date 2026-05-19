@@ -106,6 +106,11 @@ const DataCenter = () => {
         dark ? "bg-zinc-950" : "bg-[#FDFDFD]"
       }`}
     >
+      {/* React 19 Document Metadata Hoisting */}
+      <title>Data Center & Backups — Dev Tasks JSON Portability</title>
+      <meta name="description" content="Import and export your developer roadmaps and task lists as JSON backups. Keep task structures fully portable and safe." />
+      <meta name="keywords" content="devtasks, data-center, json export, task backup, restore lists, developer tools" />
+
       <div
         className={`w-full max-w-[480px] rounded-5xl p-12 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.06)] border flex flex-col items-center text-center relative overflow-hidden transition-colors duration-300 ${
           dark ? "bg-zinc-900 border-zinc-700" : "bg-white border-neutral-100"
@@ -137,6 +142,7 @@ const DataCenter = () => {
             <button
               key={action.id}
               onClick={action.onClick}
+              id={`datacenter-action-${action.id}`}
               className={`group w-full flex items-center gap-4 border-2 border-transparent rounded-4xl px-6 py-5 text-left transition-all duration-300 font-semibold ${
                 dark
                   ? "bg-zinc-800 text-white hover:bg-zinc-700 hover:border-zinc-600"

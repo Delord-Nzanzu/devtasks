@@ -43,6 +43,11 @@ const AddTasks = () => {
 
   return (
     <div className={`min-h-screen flex items-center justify-center p-6 selection:bg-black selection:text-white font-sans antialiased transition-colors duration-300 ${dark ? "bg-zinc-950" : "bg-[#FDFDFD]"}`}>
+      {/* React 19 Document Metadata Hoisting */}
+      <title>Add Tasks — Dev Tasks Roadmap Planner</title>
+      <meta name="description" content="Add new items, track features, outline bugs, refactor listings, and add lists to your developer todo list instantly on Dev Tasks (addtasks)." />
+      <meta name="keywords" content="addtasks, add tasks, add lists, devtasks, dev tasks todo, create roadmap, bug tracker" />
+
       <div className={`w-full max-w-[480px] rounded-5xl p-12 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.06)] border flex flex-col items-center text-center relative overflow-hidden transition-colors duration-300 ${dark ? "bg-zinc-900 border-zinc-700" : "bg-white border-neutral-100"}`}>
         {/* Top Accent */}
         <div className="absolute top-0 left-0 w-full h-1.5 bg-black dark:bg-white" />
@@ -133,6 +138,7 @@ const AddTasks = () => {
 
           <button
             type="submit"
+            id="submit-task-button"
             className={`group w-full font-black py-6 rounded-4xl shadow-2xl active:scale-[0.98] transition-all duration-500 flex items-center justify-center space-x-4 text-xl tracking-wide ${dark ? "bg-white text-black hover:bg-gray-100 shadow-white/20" : "bg-black text-white hover:bg-neutral-800 shadow-black/40"}`}
           >
             <span>CREATE TASK</span>

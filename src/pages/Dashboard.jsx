@@ -87,6 +87,11 @@ const Dashboard = () => {
 
   return (
     <div className={`${t.wrapper} h-screen w-full font-sans overflow-hidden flex flex-col p-8 transition-colors duration-300`}>
+      {/* React 19 Document Metadata Hoisting */}
+      <title>Developer Dashboard — Dev Tasks Roadmap Control</title>
+      <meta name="description" content="View your developer roadmap progress, add tasks, purges, and manage JSON imports on the Dev Tasks (devtasks) control dashboard." />
+      <meta name="keywords" content="devtasks, dev tasks, developer dashboard, task statistics, engineering todo" />
+
       <div className="max-w-6xl w-full mx-auto flex flex-col h-full">
         <header className="shrink-0 mb-12 flex justify-between items-end">
           <div>
@@ -120,6 +125,7 @@ const Dashboard = () => {
               <Link
                 key={card.title}
                 to={card.path}
+                id={`dashboard-card-${card.title.toLowerCase().replace(/\s+/g, '-')}`}
                 className={`group relative p-8 border rounded-3xl transition-all duration-500 transform hover:-translate-y-2 flex flex-col justify-between h-[320px] ${t.card}`}
               >
                 <div>

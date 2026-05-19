@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   return (
     <div className="h-screen w-full bg-white text-black font-sans selection:bg-black selection:text-white overflow-hidden flex flex-col">
+      {/* React 19 Document Metadata Hoisting */}
+      <title>Dev Tasks — Sleek & High-Performance Developer Todo Application</title>
+      <meta name="description" content="Manage your engineering workflow with Dev Tasks (devtasks). The ultimate todo, list-maker, and roadmap tool tailored for modern developer teams." />
+      <meta name="keywords" content="dev tasks, devtasks, todo, add lists, addtasks, developer task manager" />
+      
       <main className="grow flex items-center justify-center overflow-hidden">
         <div className="max-w-7xl w-full mx-auto px-8">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
@@ -17,7 +22,7 @@ const Home = () => {
               </p>
               <div>
                 <Link to="/dashboard">
-                  <button className="px-8 py-4 bg-black text-white font-bold rounded-lg hover:bg-gray-800 transition-all transform hover:-translate-y-1 shadow-2xl shadow-black/20">
+                  <button id="get-started-button" className="px-8 py-4 bg-black text-white font-bold rounded-lg hover:bg-gray-800 transition-all transform hover:-translate-y-1 shadow-2xl shadow-black/20">
                     Get Started
                   </button>
                 </Link>
