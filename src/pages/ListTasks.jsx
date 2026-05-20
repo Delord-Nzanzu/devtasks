@@ -16,7 +16,7 @@ const ListTasks = () => {
   });
 
   const [filter, setFilter] = useState("ALL");
-  const[searchQuery,setSearchQuery]=useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState("");
@@ -32,6 +32,12 @@ const ListTasks = () => {
    const matchSearch=task.text.toLowerCase().includes(searchQuery.toLowerCase());
     return matchFilter && matchSearch;
   });
+
+  const taskCounts = {
+    ALL: tasks.length,
+    ACTIVE: tasks.filter((task) => !task.completed).length,
+    COMPLETED: tasks.filter((task) => task.completed).length,
+  };
 
   const startEditing = (task) => {
     setEditingId(task.id);
@@ -102,6 +108,36 @@ const ListTasks = () => {
         onClick: () => restoreDeletedTask(deletedTask),
       },
     });
+  };
+
+  const clearCompletedTasks = () => {
+    const completedTasks = tasks.filter((task) => task.completed);
+    if (completedTasks.length === 0) return;
+
+    const savedDeletedTasks = localStorage.getItem("deleted_tasks");
+    const deletedTasks = savedDeletedTasks ? JSON.parse(savedDeletedTasks) : [];
+    const deletedAt = new Date().toISOString();
+    const completedWithTimestamps = completedTasks.map((task) => ({
+      ...task,
+      deletedAt,
+    }));
+    const updatedTasks = tasks.filter((task) => !task.completed);
+
+    localStorage.setItem(
+      "deleted_tasks",
+      JSON.stringify([...deletedTasks, ...completedWithTimestamps])
+    );
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    setTasks(updatedTasks);
+
+    toast.success(
+      `${completedTasks.length} completed ${
+        completedTasks.length === 1 ? "task" : "tasks"
+      } moved to delete history.`,
+      {
+        style: { background: "#000000", color: "#ffffff" },
+      }
+    );
   };
 
   const toggleComplete = (id) => {
@@ -178,11 +214,27 @@ const ListTasks = () => {
                     : "bg-transparent text-neutral-400 hover:text-black border border-transparent hover:border-neutral-300"
                 }`}
               >
-                {f}
+                {f} ({taskCounts[f]})
               </button>
             ))}
           </div>
         </div>
+
+        {taskCounts.COMPLETED > 0 && (
+          <div className="flex justify-end mb-6">
+            <button
+              type="button"
+              onClick={clearCompletedTasks}
+              className={`px-4 py-2 rounded-xl border font-black text-xs uppercase tracking-widest transition-all duration-200 cursor-pointer ${
+                dark
+                  ? "border-zinc-600 text-neutral-300 hover:border-white hover:text-white"
+                  : "border-neutral-300 text-neutral-600 hover:border-black hover:text-black"
+              }`}
+            >
+              Clear Completed
+            </button>
+          </div>
+        )}
 
     {filteredTasks.length === 0 ? (
   <p className="text-center text-neutral-400 font-medium py-8">
