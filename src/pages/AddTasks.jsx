@@ -289,7 +289,7 @@ const AddTasks = () => {
 
         <Link to="/list-tasks" className="mt-8">
           <button
-            className={`px-5 py-2.5 rounded-2xl text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 border ${
+            className={`px-5 py-2.5 cursor-pointer rounded-2xl text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 border ${
               dark
                 ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700"
                 : "bg-neutral-100 text-black border-neutral-200 hover:bg-neutral-200"

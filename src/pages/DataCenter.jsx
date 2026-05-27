@@ -80,9 +80,18 @@ const DataCenter = () => {
       description: "Download your tasks as a JSON backup file",
       onClick: handleExport,
       icon: (
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+          />
         </svg>
       ),
     },
@@ -92,9 +101,18 @@ const DataCenter = () => {
       description: "Restore tasks from a previously exported JSON file",
       onClick: () => fileInputRef.current.click(),
       icon: (
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l4-4m0 0l4 4m-4-4v12" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l4-4m0 0l4 4m-4-4v12"
+          />
         </svg>
       ),
     },
@@ -108,8 +126,14 @@ const DataCenter = () => {
     >
       {/* React 19 Document Metadata Hoisting */}
       <title>Data Center & Backups — Dev Tasks JSON Portability</title>
-      <meta name="description" content="Import and export your developer roadmaps and task lists as JSON backups. Keep task structures fully portable and safe." />
-      <meta name="keywords" content="devtasks, data-center, json export, task backup, restore lists, developer tools" />
+      <meta
+        name="description"
+        content="Import and export your developer roadmaps and task lists as JSON backups. Keep task structures fully portable and safe."
+      />
+      <meta
+        name="keywords"
+        content="devtasks, data-center, json export, task backup, restore lists, developer tools"
+      />
 
       <div
         className={`w-full max-w-[480px] rounded-5xl p-12 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.06)] border flex flex-col items-center text-center relative overflow-hidden transition-colors duration-300 ${
@@ -184,7 +208,31 @@ const DataCenter = () => {
           onChange={handleImport}
           className="hidden"
         />
+        <div className="flex justify-between items-center gap-3 mt-8 w-full">
+          <Link to="/list-tasks">
+            <button
+              className={`px-5 py-2 cursor-pointer rounded-2xl text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 border ${
+                dark
+                  ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700"
+                  : "bg-neutral-100 text-black border-neutral-200 hover:bg-neutral-200"
+              }`}
+            >
+              Task List
+            </button>
+          </Link>
 
+          <Link to="/delete-history">
+            <button
+              className={`px-5 py-2 cursor-pointer rounded-2xl text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 border ${
+                dark
+                  ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700"
+                  : "bg-neutral-100 text-black border-neutral-200 hover:bg-neutral-200"
+              }`}
+            >
+              Deleted Tasks
+            </button>
+          </Link>
+        </div>
         <Link
           to="/dashboard"
           className={`mt-12 font-bold text-sm uppercase tracking-widest transition-all duration-300 flex items-center space-x-2 ${
