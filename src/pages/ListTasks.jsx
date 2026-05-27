@@ -282,32 +282,41 @@ const ListTasks = () => {
 
   return (
     <div
-      className={`min-h-screen p-6 font-sans antialiased transition-colors duration-300 ${dark ? "bg-zinc-950" : "bg-[#FDFDFD]"}`}
+      className={`min-h-screen overflow-y-auto p-4 sm:p-6 font-sans antialiased transition-colors duration-300 ${
+        dark ? "bg-zinc-950" : "bg-[#FDFDFD]"
+      }`}
     >
       <title>Task List & Roadmaps — Dev Tasks (devtasks)</title>
+
       <meta
         name="description"
         content="View, search, filter, edit, and update active developer tasks and roadmaps. Manage bug tracking lists, refactor plans, and features."
       />
+
       <meta
         name="keywords"
         content="devtasks, dev tasks, list-tasks, add lists, engineering roadmaps, todo lists"
       />
 
       <div
-        className={`max-w-2xl mx-auto rounded-4xl shadow-lg p-8 border transition-colors duration-300 ${
+        className={`max-w-2xl mx-auto rounded-3xl sm:rounded-4xl shadow-lg p-4 sm:p-8 border transition-colors duration-300 ${
           dark ? "bg-zinc-900 border-zinc-700" : "bg-white border-neutral-100"
         }`}
       >
-        <div className="flex justify-between items-center mb-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
           <h1
-            className={`text-3xl font-black uppercase ${dark ? "text-white" : "text-black"}`}
+            className={`text-2xl sm:text-3xl font-black uppercase ${
+              dark ? "text-white" : "text-black"
+            }`}
           >
             Task List
           </h1>
+
           <ThemeToggle />
         </div>
 
+        {/* Search */}
         <input
           type="text"
           id="search-tasks-input"
@@ -323,7 +332,7 @@ const ListTasks = () => {
 
         {/* Sorting Controls */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6 sm:items-center sm:justify-between">
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setSortType("date")}
               className={`px-4 py-2 rounded-xl border text-xs font-black uppercase tracking-widest transition-all duration-200 cursor-pointer ${
@@ -372,7 +381,7 @@ const ListTasks = () => {
 
           <button
             onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-            className={`px-4 py-2 rounded-xl border text-xs font-black uppercase tracking-widest transition-all duration-200 cursor-pointer ${
+            className={`w-full sm:w-auto px-4 py-2 rounded-xl border text-xs font-black uppercase tracking-widest transition-all duration-200 cursor-pointer ${
               dark
                 ? "border-zinc-600 text-neutral-300 hover:border-white hover:text-white"
                 : "border-neutral-300 text-neutral-600 hover:border-black hover:text-black"
@@ -385,7 +394,11 @@ const ListTasks = () => {
         {/* Filter Navigation */}
         <div className="flex justify-center mb-6">
           <div
-            className={`flex gap-2 p-1 border rounded-full ${dark ? "border-zinc-700 bg-zinc-800" : "border-neutral-200 bg-neutral-50"}`}
+            className={`flex flex-wrap justify-center gap-2 p-1 border rounded-3xl ${
+              dark
+                ? "border-zinc-700 bg-zinc-800"
+                : "border-neutral-200 bg-neutral-50"
+            }`}
           >
             {FILTERS.map((f) => (
               <button
@@ -407,12 +420,13 @@ const ListTasks = () => {
           </div>
         </div>
 
+        {/* Clear Completed */}
         {taskCounts.COMPLETED > 0 && (
           <div className="flex justify-end mb-6">
             <button
               type="button"
               onClick={clearCompletedTasks}
-              className={`px-4 py-2 rounded-xl border font-black text-xs uppercase tracking-widest transition-all duration-200 cursor-pointer ${
+              className={`w-full sm:w-auto px-4 py-2 rounded-xl border font-black text-xs uppercase tracking-widest transition-all duration-200 cursor-pointer ${
                 dark
                   ? "border-zinc-600 text-neutral-300 hover:border-white hover:text-white"
                   : "border-neutral-300 text-neutral-600 hover:border-black hover:text-black"
@@ -423,6 +437,7 @@ const ListTasks = () => {
           </div>
         )}
 
+        {/* Empty State */}
         {sortedAndFilteredTasks.length === 0 ? (
           <p className="text-center text-neutral-400 font-medium py-8">
             {searchQuery
@@ -438,19 +453,22 @@ const ListTasks = () => {
             {sortedAndFilteredTasks.map((task) => (
               <li
                 key={task.id}
-                className={`flex items-center justify-between rounded-2xl p-4 shadow-sm transition-colors duration-200 ${
+                className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl p-4 shadow-sm transition-colors duration-200 ${
                   dark ? "bg-zinc-800" : "bg-neutral-50"
                 }`}
               >
-                <div className="flex items-center gap-4 flex-1 min-w-0">
+                {/* Left Content */}
+                <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
                   <input
                     type="checkbox"
                     checked={task.completed}
                     onChange={() => toggleComplete(task.id)}
-                    className={`w-5 h-5 cursor-pointer shrink-0 ${dark ? "accent-white" : "accent-black"}`}
+                    className={`w-5 h-5 mt-1 sm:mt-0 cursor-pointer shrink-0 ${
+                      dark ? "accent-white" : "accent-black"
+                    }`}
                   />
 
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="flex-1 min-w-0">
                     {editingId === task.id ? (
                       <input
                         ref={editInputRef}
@@ -460,17 +478,17 @@ const ListTasks = () => {
                         onChange={(e) => setEditingText(e.target.value)}
                         onBlur={() => saveEdit(task.id)}
                         onKeyDown={(e) => handleEditKeyDown(e, task.id)}
-                        className={`flex-1 min-w-0 bg-transparent border-b-2 outline-none font-bold text-lg uppercase tracking-wide pb-0.5 transition-all duration-200 ${
+                        className={`w-full bg-transparent border-b-2 outline-none font-bold text-base sm:text-lg uppercase tracking-wide pb-0.5 transition-all duration-200 ${
                           dark
                             ? "border-white text-white"
                             : "border-black text-black"
                         }`}
                       />
                     ) : (
-                      <div className="flex items-center gap-3">
+                      <div className="flex flex-wrap items-center gap-3">
                         <span
                           onDoubleClick={() => startEditing(task)}
-                          className={`font-semibold text-lg cursor-text transition-opacity duration-200 hover:opacity-80 ${
+                          className={`break-words font-semibold text-base sm:text-lg cursor-text transition-opacity duration-200 hover:opacity-80 ${
                             task.completed
                               ? "line-through text-neutral-400"
                               : dark
@@ -481,6 +499,7 @@ const ListTasks = () => {
                           {task.text}
                         </span>
 
+                        {/* Category */}
                         <div
                           className="relative"
                           ref={
@@ -533,6 +552,7 @@ const ListTasks = () => {
                           )}
                         </div>
 
+                        {/* Priority */}
                         {task.priority && (
                           <span
                             className={`text-[11px] font-black uppercase px-2 py-1 rounded-full shrink-0 ${
@@ -551,11 +571,12 @@ const ListTasks = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 ml-3 shrink-0">
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   {!task.completed && editingId !== task.id && (
                     <button
                       onClick={() => startEditing(task)}
-                      className={`px-4 py-2 rounded-xl border font-bold text-sm transition-all duration-300 ${
+                      className={`w-full sm:w-auto px-4 py-2 rounded-xl border font-bold text-sm transition-all duration-300 ${
                         dark
                           ? "border-white text-white hover:bg-white hover:text-black"
                           : "border-black text-black hover:bg-black hover:text-white"
@@ -567,7 +588,7 @@ const ListTasks = () => {
 
                   <button
                     onClick={() => deleteTask(task.id)}
-                    className={`px-4 py-2 rounded-xl transition-all duration-300 font-bold text-sm ${
+                    className={`w-full sm:w-auto px-4 py-2 rounded-xl transition-all duration-300 font-bold text-sm ${
                       dark
                         ? "bg-white text-black hover:bg-gray-100"
                         : "bg-black text-white hover:bg-neutral-800"
@@ -581,6 +602,7 @@ const ListTasks = () => {
           </ul>
         )}
 
+        {/* Back Link */}
         <Link
           to="/dashboard"
           className={`mt-12 font-bold text-sm uppercase tracking-widest transition-all duration-300 flex items-center space-x-2 ${
