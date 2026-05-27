@@ -152,7 +152,9 @@ const AddTasks = () => {
                     onClick={() => setCategory(opt)}
                     className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-200 cursor-pointer border ${
                       category === opt
-                        ? "bg-black text-white border-black"
+                        ? dark
+                          ? "bg-black text-white border-black"
+                          : "bg-black text-white border-black"
                         : dark
                           ? "bg-zinc-700 text-neutral-300 border-transparent hover:bg-zinc-600"
                           : "bg-neutral-100 text-neutral-600 border-transparent hover:bg-neutral-200"
@@ -222,19 +224,19 @@ const AddTasks = () => {
               {[
                 {
                   value: "HIGH",
-                  color: "bg-red-500 text-white border-red-500",
+                  color: "bg-red-500 text-white border-red-500/20",
                   inactive:
                     "bg-red-500/10 text-red-500 border-red-200 hover:bg-red-500/20",
                 },
                 {
                   value: "MEDIUM",
-                  color: "bg-yellow-500 text-white border-yellow-500",
+                  color: "bg-yellow-500 text-white border-yellow-500/20",
                   inactive:
                     "bg-yellow-500/10 text-yellow-600 border-yellow-200 hover:bg-yellow-500/20",
                 },
                 {
                   value: "LOW",
-                  color: "bg-blue-500 text-white border-blue-500",
+                  color: "bg-blue-500 text-white border-blue-500/20",
                   inactive:
                     "bg-blue-500/10 text-blue-500 border-blue-200 hover:bg-blue-500/20",
                 },
